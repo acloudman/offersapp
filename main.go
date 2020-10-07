@@ -3,13 +3,15 @@ package main
 import (
 	"context"
 	"fmt"
+	"offersapp/routes"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4"
-	"offersapp/routes"
 )
 
 func main() {
 	conn, err := connectDB()
+	fmt.Println("====>", conn)
 	if err != nil {
 		return
 	}
@@ -18,7 +20,8 @@ func main() {
 	router.Use(dbMiddleware(*conn))
 	userGroup := router.Group("users")
 	{
-		userGroup.POST("register", routes.UserRegister)
+		userGroup.POST("register", routes.UsersRegister)
+		userGroup.POST("login", routes.UsersLogin)
 	}
 	router.Run(":3000")
 }
